@@ -1,0 +1,13 @@
+1. Issue 1: Names of players contain special unicode chars like \u00.  (FIXED)
+
+2. run scrapy crawl nameofspider -o items.json -t json in top directory of scrapy project
+
+3. add disclaimer not to run at one go
+
+4. issue: requests are logged immediately, but only executed 1 by 1. is it possible to slow down requests?
+
+5. json line exporter used (better for large exports) format=.jl
+
+6. depth_priority = 1 (DFS like behaviour)
+
+7. mention python 27
