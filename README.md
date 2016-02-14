@@ -7,7 +7,7 @@ This is a [scrapy](https://github.com/scrapy/scrapy) based tool can extract play
 2. [JSON line exporter] (http://doc.scrapy.org/en/latest/topics/exporters.html#json-with-large-data) setting was used in settings.py to handle large feeds 
 3. I have modified it to run in DFS fashion (depth_priority=1) rather than the default BFS
 4. [Long delays](http://doc.scrapy.org/en/latest/topics/autothrottle.html) were set for requests and number of concurrent requests are very low
-5. player_stats.jl (in progress) contains all the player statistics from [here](http://www.futhead.com/16/players/?level=all_nif&bin_platform=ps)
+5. [player_stats.jl](player_stats.jl) (in progress) contains all the player statistics from [here](http://www.futhead.com/16/players/?level=all_nif&bin_platform=ps)
 
 # Usage
 Run "scrapy crawl fifa -o items.jl -s JOBDIR=attempt/spider1" in the root directory of the project. An "attempt" directory will be created locally with spider settings to allow pausing and resuming of jobs. To pause spider, press CRTL+C in the shell/cmd and wait for spider to shut down automatically. DO NOT press it twice as it will force shut the spider. To resume crawling, just enter the same command in the root directory again: "scrapy crawl fifa -o items.jl -s JOBDIR=attempt/spider1". [Here](http://doc.scrapy.org/en/latest/topics/jobs.html) are the relavent scrapy docs. 
