@@ -14,30 +14,24 @@ class fifaSpider(Spider):
     start_urls = [
         "http://www.futhead.com/16/players/?level=all_nif&bin_platform=ps"
     ]
-    page_count = 1;
-    hasNextPage = True
 	
 
     def parse(self, response):
         #obtains links from page to page and passes links to parse_playerURL
         sel = Selector(response)    #define selector based on response object (points to urls in start_urls by default) 
         url_list = sel.xpath('//tbody/tr/td[@class="player"]/a/@href')   #obtain a list of href links that contain relative links of players
-        error_check = self.clean_str(sel.xpath('//title/text()').extract_first())       #obtain title text to see if it contains 404 error
         
-        if not ("404" in error_check):
-            for i in url_list:
-                relative_url = self.clean_str(i.extract())    #i is a selector and hence need to extract it to obtain unicode object
-                print urljoin(response.url, relative_url)   #urljoin is able to merge absolute and relative paths to form 1 coherent link
-                req = Request(urljoin(response.url, relative_url),callback=self.parse_playerURL)   #pass on request with new urls to parse_playerURL
-                req.headers["User-Agent"] = self.random_ua()    
-                yield req
-        else:
-            self.hasNextPage = False
-            
-        if(self.hasNextPage):
-            self.page_count+=1
-            next_url="?page=" + str(self.page_count) +"&level=all_nif"  
-            reqNext = Request(urljoin(response.url, next_url),callback=self.parse)    #calls back this function to repeat process on new list of links
+        for i in url_list:
+            relative_url = self.clean_str(i.extract())    #i is a selector and hence need to extract it to obtain unicode object
+            print urljoin(response.url, relative_url)   #urljoin is able to merge absolute and relative paths to form 1 coherent link
+            req = Request(urljoin(response.url, relative_url),callback=self.parse_playerURL)   #pass on request with new urls to parse_playerURL
+            req.headers["User-Agent"] = self.random_ua()    
+            yield req
+        
+        next_url=sel.xpath('//div[@class="right-nav pull-right"]/a[@rel="next"]/@href').extract_first()  
+        if(next_url):                                                                       #checks if next page exists
+            clean_next_url = self.clean_str(next_url)
+            reqNext = Request(urljoin(response.url, clean_next_url),callback=self.parse)    #calls back this function to repeat process on new list of links
             yield reqNext
          
     def parse_playerURL(self, response):    
