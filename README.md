@@ -10,7 +10,7 @@ This is a [scrapy](https://github.com/scrapy/scrapy) based tool can extract play
 5. [Long delays](http://doc.scrapy.org/en/latest/topics/autothrottle.html) were set for requests and number of concurrent requests are very low
 
 # Usage
-Run "scrapy crawl fifa -o player_stats.jl -s JOBDIR=attempt/spider1" in the root directory of the project. An "attempt" directory will be created locally with spider settings to allow pausing and resuming of jobs. To pause spider, press CRTL+C in the shell/cmd and wait for spider to shut down automatically. DO NOT press it twice as it will force shut the spider. To resume crawling, just enter the same command in the root directory again: "scrapy crawl fifa -o items.jl -s JOBDIR=attempt/spider1". [Here](http://doc.scrapy.org/en/latest/topics/jobs.html) are the relavent scrapy docs. 
+Run "scrapy crawl fifa -o player_stats.jl -s JOBDIR=attempt/spider1" in the root directory of the project. An "attempt" directory will be created locally with spider settings to allow pausing and resuming of jobs. To pause spider, press CRTL+C in the shell/cmd and wait for spider to shut down automatically. DO NOT press it twice as it will force shut the spider. To resume crawling, just enter the same command in the root directory again: "scrapy crawl fifa -o player_stats.jl -s JOBDIR=attempt/spider1". [Here](http://doc.scrapy.org/en/latest/topics/jobs.html) are the relavent scrapy docs. 
 If you have no idea what I'm talking about, you can take a look [here](http://doc.scrapy.org/en/master/intro/overview.html) to setup scrapy. 
 
 If there are any issues, please report them or if you would like any additional features, please request them!
