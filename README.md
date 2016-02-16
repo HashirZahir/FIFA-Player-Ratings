@@ -39,10 +39,11 @@ start_urls = [
 5. [Long delays](http://doc.scrapy.org/en/latest/topics/autothrottle.html) were set for requests and number of concurrent requests are very low
 
 # How it works
-futhead.com/16/players contains a list of all FIFA 16 players. Each page contains about 40-50 players. My program will scan the html file of this page and take note of all the href attributes (links) of the players and yield a request to parse_playerURL to traverse to that link.
+http://www.futhead.com/16/players/?level=all_nif contains a list of all normal FIFA 16 players. Each page contains about 40-50 players. My program will scan the html file of this page and take note of all the href attributes (links) of the players and yield a request to parse_playerURL to traverse to that link.
 
 *Note: self.clean_str is a defined function which converts the unicode object to str and strips it of spaces and tab characters*
 ```python
+#in parse function
 url_list = sel.xpath('//tbody/tr/td[@class="player"]/a/@href')   #obtain a list of href links that contain relative links of players
         
         for i in url_list:
@@ -57,6 +58,7 @@ Once the request has been yielded, scrapy will process these requests asynchrono
 
 *Note: 1name was used as the key for the name attribute of players so that it would be the first key to populate in the json lines alphabetically.*
 ```python
+#in parse_playerURL function
 site = Selector(response)
 items = []
 item = PlayerItem()
@@ -68,6 +70,16 @@ stats = site.xpath('//div[@class="row player-center-container"]/div/a')
     
     items.append(item)
     return items
+```
+After all the players on 1 page have been scraped, the spider checks if a next page attribute exists. If it does, it will create a new request for the next page with a callback to the same parse function.
+```python
+#in parse function
+next_url=sel.xpath('//div[@class="right-nav pull-right"]/a[@rel="next"]/@href').extract_first()  
+        if(next_url):   #checks if next page exists
+            clean_next_url = self.clean_str(next_url)
+            reqNext = Request(urljoin(response.url, clean_next_url),callback=self.parse)    
+            #calls back this function to repeat process on new list of links
+            yield reqNext
 ```
 
 # Disclaimer
