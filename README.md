@@ -1,6 +1,6 @@
 # FIFA-Player-Ratings
 
-This is a [scrapy](https://github.com/scrapy/scrapy) based tool can extract player statistics from futhead.com. EA has spent lots of money and time crafting individual statistics for thousands of players and these might be the closest representation of player statistics we have to do any analysis. Based on some reviews from websites, it also showed that FIFA Ultimate team player ratings are somewhat close (on average) to real life performance (but of course impossible to be precise). My aim is to provide a tool that can extract this data and make it available to all. Currently, I am only scraping data of non-in-form players (normal players, not legends or some old players) but this code can be easily modified to scrape other lists (simply modify start_urls).
+This is a [scrapy](https://github.com/scrapy/scrapy) based tool can extract player statistics from futhead.com. EA has spent lots of money and time crafting individual statistics for thousands of players and these might be the closest representation of player statistics we have to do any analysis. Based on some reviews from websites, it also showed that FIFA Ultimate team player ratings are somewhat close (on average) to real life performance (but of course impossible to be precise). My aim is to provide a tool that can extract this data and make it available to all. Currently, I am only scraping data of non-in-form players (normal players, not legends or some old players) but this code can be easily modified to scrape other lists (mentioned below).
 
 If you are just interested in the player statistics, you can have a look [here](player_stats.jl) (list is still being updated)
 
@@ -21,6 +21,15 @@ An "attempt" directory will be created locally with spider settings to allow pau
 
 
 If there are any issues, please report them or if you would like any additional features, please request them!
+
+# Modifying Player List
+Currently, the default start list has been set to [this page](http://www.futhead.com/16/players/?level=all_nif). To scrape through other lists, (for example, the data from [2013](http://www.futhead.com/13/players/?level=all_nif)), just go to the [fifa_spider.py](/FIFAscrape/spiders/fifa_spider.py) and modify the start_urls variable:  
+```python
+start_urls = [
+        "http://www.futhead.com/16/players/?level=all_nif&bin_platform=ps"
+    ]
+```
+
 
 # Important notes
 1. [player_stats.jl](player_stats.jl) (in progress) contains all the player statistics from [here](http://www.futhead.com/16/players/?level=all_nif&bin_platform=ps)
