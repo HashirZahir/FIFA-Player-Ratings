@@ -40,6 +40,8 @@ class fifaSpider(Spider):
         items = []
         item = PlayerItem()
         item['1name'] = (response.url).rsplit("/")[-2].replace("-"," ")
+        title = self.clean_str(site.xpath('/html/head/title/text()').extract_first())
+        item['OVR'] = title.partition("FIFA")[0].split(" ")[-2]
         stats = site.xpath('//div[@class="row player-center-container"]/div/a')
         for stat in stats:
             attr_name = self.clean_str(stat.xpath('.//text()').extract_first())
