@@ -54,7 +54,7 @@ url_list = sel.xpath('//tbody/tr/td[@class="player"]/a/@href')   #obtain a list 
             yield req
 ```
 
-Once the request has been yielded, scrapy will process these requests asynchronously (by default). When examining a player url (such as [this](http://www.futhead.com/16/players/26/zlatan-ibrahimovic/)), it will first create an item list which will contain all the player related attributes. The keys for this list (other than the name of player) are generated dynamically from the link. After all the attributes are collected, the list is returned and handled by the [item pipeline](http://doc.scrapy.org/en/latest/topics/item-pipeline.html) and [item exporter](http://doc.scrapy.org/en/latest/topics/exporters.html).
+Once the request has been yielded, scrapy will process these requests asynchronously (by default). When examining a player url (such as [this](http://www.futhead.com/16/players/26/zlatan-ibrahimovic/)), it will first create an item list which will contain all the player related attributes. The keys for this list (other than the name and overall attribute of player) are generated dynamically from the link. After all the attributes are collected, the list is returned and handled by the [item pipeline](http://doc.scrapy.org/en/latest/topics/item-pipeline.html) and [item exporter](http://doc.scrapy.org/en/latest/topics/exporters.html).
 
 *Note: 1name was used as the key for the name attribute of players so that it would be the first key to populate in the json lines alphabetically.*
 ```python
@@ -63,6 +63,8 @@ site = Selector(response)
 items = []
 item = PlayerItem()
 item['1name'] = (response.url).rsplit("/")[-2].replace("-"," ")
+title = self.clean_str(site.xpath('/html/head/title/text()').extract_first())
+item['OVR'] = title.partition("FIFA")[0].split(" ")[-2]
 stats = site.xpath('//div[@class="row player-center-container"]/div/a')
     for stat in stats:
          attr_name = self.clean_str(stat.xpath('.//text()').extract_first())
