@@ -11,7 +11,7 @@ Install the required packages (if not already installed) such as [pip](https://p
 
 If you are on Windows, watch this [youtube video](https://www.youtube.com/watch?v=eEK2kmmvIdw) which provides a detailed step by step guide on how to install Scrapy and should not take more than 10 minutes.
 
-After installing Scrapy, you can download my [FIFAscrape](FIFAscrape) folder and the [scrapy.cfg](scrapy.cfg). Next, run  
+After installing Scrapy, you can clone this repo and run  
 `scrapy crawl fifa -o player_stats.jl -s JOBDIR=attempt/spider1`  
 in the root directory of the project (note: fifa is the name of the spider set in [fifa_spider.py](/FIFAscrape/spiders/fifa_spider.py)). 
 
