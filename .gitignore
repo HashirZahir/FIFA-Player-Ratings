@@ -1,2 +1,3 @@
+/attempt
 #ignore python compiled bytecode
 *.pyc
