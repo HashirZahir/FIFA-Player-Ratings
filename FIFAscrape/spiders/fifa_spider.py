@@ -19,8 +19,7 @@ class fifaSpider(Spider):
     def parse(self, response):
         #obtains links from page to page and passes links to parse_playerURL
         sel = Selector(response)    #define selector based on response object (points to urls in start_urls by default) 
-        url_list = sel.xpath('//tbody/tr/td[@class="player"]/a/@href')   #obtain a list of href links that contain relative links of players
-        
+        url_list = sel.xpath('//a[@class="display-block padding-0"]/@href')   #obtain a list of href links that contain relative links of players
         for i in url_list:
             relative_url = self.clean_str(i.extract())    #i is a selector and hence need to extract it to obtain unicode object
             print urljoin(response.url, relative_url)   #urljoin is able to merge absolute and relative paths to form 1 coherent link
@@ -41,12 +40,14 @@ class fifaSpider(Spider):
         item = PlayerItem()
         item['1name'] = (response.url).rsplit("/")[-2].replace("-"," ")
         title = self.clean_str(site.xpath('/html/head/title/text()').extract_first())
-        item['OVR'] = title.partition("FIFA")[0].split(" ")[-2]
+        item['OVR'] = title.partition("FIFA 16 -")[1].split("-")[0]
         item['POS'] = self.clean_str(site.xpath('//div[@class="playercard-position"]/text()').extract_first())
-        stats = site.xpath('//div[@class="row player-center-container"]/div/a')
-        for stat in stats:
-            attr_name = self.clean_str(stat.xpath('.//text()').extract_first())
-            item[attr_name] = self.clean_str(stat.xpath('.//div/text()').extract_first())
+        #stats = site.xpath('//div[@class="row player-center-container"]/div/a')
+        stat_names = site.xpath('//span[@class="player-stat-title"]')
+        stat_values = site.xpath('//span[contains(@class, "player-stat-value")]')
+        for index in range(len(stat_names)):
+            attr_name = stat_names[index].xpath('.//text()').extract_first()
+            item[attr_name] = stat_values[index].xpath('.//text()').extract_first()
         items.append(item)
         return items
         
